@@ -44,6 +44,13 @@ pub fn parse_settings() -> Settings {
                                .long("--messages")
                                .short("m")
                                .takes_value(true)
+                               .validator(|val| {
+                                   if val.parse::<u64>().unwrap() == 0 {
+                                       return Err("Need to send at least one message".to_string());
+                                   }
+
+                                   return Ok(());
+                               })
                                .help(""))
                           .arg(Arg::with_name("sleep_time")
                                .long("--sleep-time")
