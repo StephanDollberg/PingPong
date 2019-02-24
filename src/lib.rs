@@ -8,6 +8,7 @@ pub struct Settings {
     pub non_blocking: bool,
     pub warm_up_count: u64,
     pub msg_count: u64,
+    pub msg_size: u64,
     pub sleep_time: u64,
     pub ponger_addr: String,
     pub pinger_addr: String,
@@ -51,10 +52,21 @@ pub fn parse_settings() -> Settings {
 
                                    return Ok(());
                                })
+                              .help(""))
+                          .arg(Arg::with_name("message_size")
+                               .long("--message-size")
+                               .short("s")
+                               .takes_value(true)
+                               .validator(|val| {
+                                   if val.parse::<u64>().unwrap() > 65000 {
+                                       return Err("Messages bigger than 65k are not supported yet".to_string());
+                                   }
+
+                                   return Ok(());
+                               })
                                .help(""))
                           .arg(Arg::with_name("sleep_time")
                                .long("--sleep-time")
-                               .short("s")
                                .takes_value(true)
                                .help(""))
                           .arg(Arg::with_name("ponger")
@@ -73,6 +85,7 @@ pub fn parse_settings() -> Settings {
         non_blocking: matches.is_present("non_blocking"),
         warm_up_count: matches.value_of("warmup_messages").unwrap_or("1000").parse::<u64>().unwrap(),
         msg_count: matches.value_of("messages").unwrap_or("1000").parse::<u64>().unwrap(),
+        msg_size: matches.value_of("message_size").unwrap_or("64").parse::<u64>().unwrap(),
         sleep_time: matches.value_of("sleep_time").unwrap_or("0").parse::<u64>().unwrap(),
         ponger_addr: matches.value_of("remote").unwrap_or("localhost:10000").to_string(),
         pinger_addr: matches.value_of("local").unwrap_or("localhost:10001").to_string(),

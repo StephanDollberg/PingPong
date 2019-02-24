@@ -5,7 +5,7 @@ fn pong<Socket: pingpong::Sender>(mut sock: Socket, settings: &pingpong::Setting
         sock.set_busy(true).unwrap();
     }
 
-    let mut buf: [u8; 4096] = [0; 4096];
+    let mut buf: [u8; 65000] = [0; 65000];
 
     loop {
         let bytes_read = pingpong::read_busy_until_some(&mut sock, &mut buf).expect("Reading ping failed");

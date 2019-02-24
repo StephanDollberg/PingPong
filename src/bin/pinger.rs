@@ -27,8 +27,9 @@ fn ping<Socket: pingpong::Sender>(mut client: Socket, settings: &pingpong::Setti
         client.set_busy(true).unwrap();
     }
 
-    let msg: &[u8] = "Hello pong".as_bytes();
-    let mut recv_buf: [u8; 4096] = [0; 4096];
+    let msg_string = "x".to_string().repeat(settings.msg_size as usize);
+    let msg: &[u8] = msg_string.as_bytes();
+    let mut recv_buf: [u8; 65000] = [0; 65000];
 
     let mut times = Vec::new();
     times.reserve(settings.msg_count as usize);
