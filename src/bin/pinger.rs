@@ -8,11 +8,12 @@ fn print_stats(mut times: Vec<u32>) {
     let p99 = times.len() as f64 * 0.99;
     let p999 = times.len() as f64 * 0.999;
 
-    println!("Stats (ns): p50: {} p95: {} p99: {} p999: {}",
+    println!("Stats (ns): p50: {} p95: {} p99: {} p999: {} max: {}",
         times[p50 as usize],
         times[p95 as usize],
         times[p99 as usize],
         times[p999 as usize],
+        times.last().unwrap(),
     );
 }
 
